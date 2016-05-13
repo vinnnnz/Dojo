@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Async promise sample program</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        
+        
+        <script>
+        dojoConfig = {
+            async : true,
+            parseOnLoad : true
+        };      
+        </script>
+        <script src="./lib/dojo/dojo.js"></script>
+       
+        
+        <script>
+            
+          // This is an example of dojo/deferred
+         var execute = function() {
+             require(["dojo/Deferred"], function(Deferred) {
+
+             var lock = new Deferred();
+             var text = "";
+            require(["dojo/ready", "dojo/parser", "app/display/XWrite"] , 
+                function(ready, parser, XWrite){
+                    
+                        var write = new XWrite();
+                        text = write._callMe();
+                        lock.resolve(text);
+                });
+                
+                //Execute after resolving injected value in other widget.
+                lock.then(function(text) {
+                    console.log("deffered call: ", text);
+                });
+                
+            });
+         };   
+         
+        
+        //This is an exanple of dojo/when
+        
+       /* var execute = function() {
+             require(["dojo/when"], function(when) {
+
+             var text = "";
+            require(["dojo/ready", "dojo/parser", "app/display/XWrite"] , 
+                function(ready, parser, XWrite){
+                    
+                        var write = new XWrite();
+                        text = write._callMe();
+                        when(text, executeAfterResolve);
+                });
+                
+                //Execute after resolving injected value in other widget.
+                var executeAfterResolve = function(text) {
+                    
+                    console.log("deffered call: ", text);
+                };
+                
+            });
+         }; */
+    
+    
+         // This is an exmaple of dojo/promise/all, this is to resolve multiple injection. 
+         // there is another alternative to resolve multiple injection is combination of dojo/DeferredList, dojo/_base/Deferred widgets
+    
+         /*var execute = function() {
+             require(["dojo/promise/all"], function(All) {
+
+             var text = "";
+            require(["dojo/ready", "dojo/parser", "app/display/XWrite"] , 
+                function(ready, parser, XWrite){
+                    
+                        var write = new XWrite();
+                        text = write._callMe();
+                        All([text]).then(executeAfterResolve);
+                });
+                
+                //Execute after resolving injected value in other widget.
+                var executeAfterResolve = function(text) {
+                    
+                    console.log("deffered call: ", text[0]);
+                };
+                
+            });
+         };*/
+     
+    
+         //Function call to test the above examples.
+         execute();
+        </script>
+        
+        
+    </body>
+</html>
