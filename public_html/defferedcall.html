@@ -39,8 +39,16 @@ and open the template in the editor.
                 });
                 
                 //Execute after resolving injected value in other widget.
-                lock.then(function(text) {
+                var lock2 = lock.then(function(text) {
                     console.log("deffered call: ", text);
+                });
+                
+                var lock3 = lock2.then(function() {
+                   console.log("call one"); 
+                });
+                
+                lock3.then(function() {
+                   console.log("call two"); 
                 });
                 
             });
